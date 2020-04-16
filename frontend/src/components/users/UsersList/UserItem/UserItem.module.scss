@@ -1,0 +1,61 @@
+.container {
+	background-color: #292929;
+	max-width: 20.5rem;
+	width: 100%;
+	border-radius: 6px;
+	margin: 1rem;
+
+	.wrapper {
+		padding: 0;
+
+		.userContainer {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			padding: 1rem;
+			color: #fff;
+			background-color: #292929;
+
+			&:hover,
+			&:active {
+				background-color: #ffd900;
+
+				.userName,
+				.userPlaceCount {
+					color: #292929;
+				}
+			}
+
+			.userImage {
+				margin-right: 1rem;
+
+				@media screen and (max-width: 19rem) {
+					& {
+						display: none;
+					}
+				}
+			}
+
+			.userName {
+				margin: 0;
+				margin-bottom: 0.5rem;
+				color: #ffd900;
+				font-weight: normal;
+				font-size: 1.3rem;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.userPlaceCount {
+				margin: 0;
+				font-size: 1.1rem;
+			}
+
+			.userInfo {
+				width: 100%;
+				max-width: 12.1rem;
+			}
+		}
+	}
+}
