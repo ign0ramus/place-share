@@ -4,15 +4,15 @@ import UserItem from './UserItem/UserItem';
 import Card from '../../common/Card/Card';
 import classes from './UsersList.module.scss';
 
-const UsersList = (props) => (
+const UsersList = ({users}) => (
 	<div className={classes.container}>
-		{!props.users.length ? (
+		{!users.length ? (
 			<Card>
 				<h2 className={classes.empty}>No users found!</h2>
 			</Card>
 		) : (
 			<ul className={classes.usersList}>
-				{props.users.map((user) => (
+				{users.map((user) => (
 					<UserItem key={user.id} user={user} />
 				))}
 			</ul>

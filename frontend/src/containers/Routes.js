@@ -12,16 +12,16 @@ const NewPlace = lazy(() => import('./NewPlace'));
 
 const Routes = () => {
 	return (
-			<Suspense fallback={'Loading...'}>
-				<Switch>
-					<Route path='/' exact component={Users} />
+		<Suspense fallback={'Loading...'}>
+			<Switch>
+				<Route path='/' exact component={Users} />
 
-					<Route path='/places' exact component={Places} />
-					<Route path='/places/new' exact component={NewPlace} />
+				<Route path='/:userId/places' exact component={Places} />
+				<Route path='/places/new' exact component={NewPlace} />
 
-					<Redirect to='/' />
-				</Switch>
-			</Suspense>
+				<Redirect to='/' />
+			</Switch>
+		</Suspense>
 	);
 };
 
