@@ -21,13 +21,13 @@ const Header = () => {
 	return (
 		<>
 			{drawerIsOpen && <Backdrop onClick={handleCloseDrawer} />}
-			<SideDrawer isOpen={drawerIsOpen} handleClick={handleCloseDrawer}>
+			<SideDrawer isOpen={drawerIsOpen} onClose={handleCloseDrawer}>
 				<nav className={classes.sideDrawer}>
 					<NavLinks />
 				</nav>
 			</SideDrawer>
 			<header className={classes.container}>
-				<MobileButton handleClick={handleOpenDrawer} />
+				<MobileButton onClick={handleOpenDrawer} />
 				<h1 className={classes.title}>
 					<Link to='/'>PlaceShare</Link>
 				</h1>

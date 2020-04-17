@@ -18,7 +18,7 @@ const SideDrawer = (props) =>
 			mountOnEnter
 			unmountOnExit
 		>
-			<aside onClick={props.handleClick} className={classes.container}>
+			<aside onClick={props.onClose} className={classes.container}>
 				{props.children}
 			</aside>
 		</CSSTransition>,

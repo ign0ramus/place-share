@@ -1,7 +1,9 @@
 import React from 'react';
 
+import NewPlaceForm from '../components/places/NewPlaceForm/NewPlaceForm';
+
 const NewPlace = () => {
-	return <p>Add places!</p>;
+	return <NewPlaceForm />;
 };
 
 export default NewPlace;
