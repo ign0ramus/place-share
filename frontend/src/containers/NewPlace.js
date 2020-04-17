@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NewPlaceForm from '../components/places/NewPlaceForm/NewPlaceForm';
+import NewPlaceForm from '../components/Places/PlaceForm/NewPlaceForm';
 
 const NewPlace = () => {
 	return <NewPlaceForm />;
