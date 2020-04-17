@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Card from '../../../common/Card/Card';
 import Button from '../../../common/Button/Button';
 import Modal from '../../../common/Modal/Modal';
+import Map from '../../../common/Map/Map';
 import classes from './PlaceItem.module.scss';
 
 const PlaceItem = ({ place }) => {
@@ -22,7 +23,7 @@ const PlaceItem = ({ place }) => {
 				footer={<Button onClick={hanldeCloseMap}>Close</Button>}
 			>
 				<div className={classes.mapContainer}>
-					<h2>THE MAP!</h2>
+					<Map center={place.coordinates} zoom={16}/>
 				</div>
 			</Modal>
 			<li className={classes.container}>
@@ -37,10 +38,10 @@ const PlaceItem = ({ place }) => {
 					</div>
 					<div className={classes.placeActions}>
 						<Button type='inverse' onClick={handleOpenMap}>
-							VIEW ON MAP
+							View on map
 						</Button>
-						<Button to={`/places/${place.id}`}>EDIT</Button>
-						<Button type='danger'>DELETE</Button>
+						<Button to={`/places/${place.id}`}>Edit</Button>
+						<Button type='danger'>Delete</Button>
 					</div>
 				</Card>
 			</li>

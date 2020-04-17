@@ -11,7 +11,7 @@ const PLACES = [
 		image:
 			'https://cropper.watch.aetnd.com/public-content-aetn.video.aetnd.com/video-thumbnails/AETN-History_VMS/21/202/tdih-may01-HD.jpg?w=1440',
 		address: '20W 34th StaticRange, New York, NY 10001',
-		location: {
+		coordinates: {
 			lat: 40.7484405,
 			lng: -73.9878584,
 		},
@@ -24,7 +24,7 @@ const PLACES = [
 		image:
 			'https://cropper.watch.aetnd.com/public-content-aetn.video.aetnd.com/video-thumbnails/AETN-History_VMS/21/202/tdih-may01-HD.jpg?w=1440',
 		address: '20W 34th StaticRange, New York, NY 10001',
-		location: {
+		coordinates: {
 			lat: 40.7484405,
 			lng: -73.9878584,
 		},
