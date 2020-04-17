@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Card from '../../../common/Card/Card';
 import Button from '../../../common/Button/Button';
 import Modal from '../../../common/Modal/Modal';
 import Map from '../../../common/Map/Map';
+import { UserContext } from '../../../../context/UserContext';
 import classes from './PlaceItem.module.scss';
 
 const PlaceItem = ({ place }) => {
 	const [isMapOpen, setIsMapOpen] = useState(false);
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+	const userContext = useContext(UserContext);
 
 	const handleOpenMap = () => setIsMapOpen(true);
 	const hanldeCloseMap = () => setIsMapOpen(false);
@@ -78,10 +80,14 @@ const PlaceItem = ({ place }) => {
 						<Button type='inverse' onClick={handleOpenMap}>
 							View on map
 						</Button>
-						<Button to={`/places/${place.id}`}>Edit</Button>
-						<Button onClick={handleOpenDelete} type='danger'>
-							Delete
-						</Button>
+						{userContext.user && (
+							<>
+								<Button to={`/places/${place.id}`}>Edit</Button>
+								<Button onClick={handleOpenDelete} type='danger'>
+									Delete
+								</Button>
+							</>
+						)}
 					</div>
 				</Card>
 			</li>

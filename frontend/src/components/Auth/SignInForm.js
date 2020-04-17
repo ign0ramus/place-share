@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { useForm } from '../../hooks/formHook';
 import Card from '../common/Card/Card';
 import Input from '../common/Input/Input';
 import Button from '../common/Button/Button';
+import { UserContext } from '../../context/UserContext';
 import classes from './styles.module.scss';
 
 const initInputs = {
@@ -19,9 +20,11 @@ const initInputs = {
 
 const SignInForm = (props) => {
 	const [state, handleChange] = useForm(initInputs, {});
+	const userContext = useContext(UserContext);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		userContext.signIn();
 		console.log('Login');
 	};
 
