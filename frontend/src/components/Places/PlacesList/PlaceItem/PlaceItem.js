@@ -8,9 +8,18 @@ import classes from './PlaceItem.module.scss';
 
 const PlaceItem = ({ place }) => {
 	const [isMapOpen, setIsMapOpen] = useState(false);
+	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
 	const handleOpenMap = () => setIsMapOpen(true);
 	const hanldeCloseMap = () => setIsMapOpen(false);
+
+	const handleOpenDelete = () => setIsDeleteOpen(true);
+	const handleCloseDelete = () => setIsDeleteOpen(false);
+
+	const handleDelete = () => {
+		console.log('DELETE');
+		handleCloseDelete();
+	};
 
 	return (
 		<>
@@ -23,8 +32,37 @@ const PlaceItem = ({ place }) => {
 				footer={<Button onClick={hanldeCloseMap}>Close</Button>}
 			>
 				<div className={classes.mapContainer}>
-					<Map center={place.coordinates} zoom={16}/>
+					<Map center={place.coordinates} zoom={16} />
 				</div>
+			</Modal>
+			<Modal
+				isOpen={isDeleteOpen}
+				onCancel={handleCloseDelete}
+				header='Are you sure?'
+				footerClass={classes.placeActions}
+				footer={
+					<>
+						<Button
+							className={classes.btn}
+							onClick={handleCloseDelete}
+							type='inverse'
+						>
+							Cancel
+						</Button>
+						<Button
+							className={classes.btn}
+							onClick={handleDelete}
+							type='danger'
+						>
+							Delete
+						</Button>
+					</>
+				}
+			>
+				<p>
+					Do you want to proceed and delete this place? Please note that it
+					can't be undone thereafter.
+				</p>
 			</Modal>
 			<li className={classes.container}>
 				<Card className={classes.placeContent}>
@@ -41,7 +79,9 @@ const PlaceItem = ({ place }) => {
 							View on map
 						</Button>
 						<Button to={`/places/${place.id}`}>Edit</Button>
-						<Button type='danger'>Delete</Button>
+						<Button onClick={handleOpenDelete} type='danger'>
+							Delete
+						</Button>
 					</div>
 				</Card>
 			</li>

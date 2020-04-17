@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import PlacesList from '../components/places/PlacesList/PlacesList';
+import PlacesList from '../components/Places/PlacesList/PlacesList';
 
 const PLACES = [
 	{

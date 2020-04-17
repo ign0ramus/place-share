@@ -1,10 +1,11 @@
 import React from 'react';
-import { isEmpty } from 'lodash';
 
-import { useForm } from '../../../hooks/placeFormHook';
+import Card from '../../common/Card/Card';
+import { useForm } from '../../../hooks/formHook';
 import Form from '../../common/Form/Form';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
+import classes from './EditPlaceForm.module.scss';
 
 const EditPlaceForm = (props) => {
 	const initInputs = {
@@ -18,24 +19,21 @@ const EditPlaceForm = (props) => {
 		},
 	};
 
-	const [ state, handleChange ] = useForm(initInputs, {});
+	const [state, handleChange] = useForm(initInputs, {});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 	};
 
-	const isInitState = () => isEmpty(state.errors);
-	const hasErrors = () => Object.values(state.errors).some(Boolean);
-	const isEveryInputFilled = () =>
-		!Object.values(state.inputs).every((el) => Boolean(el.value));
-	const wasPlaceDataChanged = () =>
-		Object.values(state.inputs).some((el) => el.value !== props.place[el.id]);
-
-	const isBtnDisabled = () =>
-		isInitState() ||
-		hasErrors() ||
-		isEveryInputFilled() ||
-		!wasPlaceDataChanged();
+	if (props.error) {
+		return (
+			<div className={classes.container}>
+				<Card>
+					<h2>Could not find the place!</h2>
+				</Card>
+			</div>
+		);
+	}
 
 	return (
 		<Form onSubmit={handleSubmit}>
@@ -54,7 +52,7 @@ const EditPlaceForm = (props) => {
 				onChange={handleChange}
 				error={state.errors.description}
 			/>
-			<Button type='submit' disabled={isBtnDisabled()}>
+			<Button type='submit' disabled={state.isSubmitDisabled}>
 				Edit place
 			</Button>
 		</Form>

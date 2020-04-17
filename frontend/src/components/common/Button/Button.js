@@ -5,10 +5,15 @@ import classnames from 'classnames';
 import classes from './Button.module.scss';
 
 const Button = (props) => {
-	const classNames = classnames(classes.button, classes[props.size], {
-		[classes[props.type]]: props.type,
-		[classes[props.type]]: props.type,
-	});
+	const classNames = classnames(
+		classes.button,
+		props.className,
+		classes[props.size],
+		{
+			[classes[props.type]]: props.type,
+			[classes[props.type]]: props.type,
+		}
+	);
 
 	if (props.href) {
 		return (

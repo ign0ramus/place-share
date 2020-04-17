@@ -1,7 +1,6 @@
 import React from 'react';
-import { isEmpty } from 'lodash';
 
-import { useForm } from '../../../hooks/placeFormHook';
+import { useForm } from '../../../hooks/formHook';
 import Form from '../../common/Form/Form';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
@@ -28,14 +27,6 @@ const NewPlaceForm = () => {
 		e.preventDefault();
 	};
 
-	const isInitState = () => isEmpty(state.errors);
-	const hasErrors = () => Object.values(state.errors).some(Boolean);
-	const isEveryInputFilled = () =>
-		!Object.values(state.inputs).every((el) => Boolean(el.value));
-
-	const isBtnDisabled = () =>
-		isInitState() || hasErrors() || isEveryInputFilled();
-
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Input
@@ -56,11 +47,11 @@ const NewPlaceForm = () => {
 			<Input
 				id={state.inputs.address.id}
 				element='input'
-				value={state.inputs.address}
+				value={state.inputs.address.value}
 				onChange={handleChange}
 				error={state.errors.address}
 			/>
-			<Button type='submit' disabled={isBtnDisabled()}>
+			<Button type='submit' disabled={state.isSubmitDisabled}>
 				Add place
 			</Button>
 		</Form>

@@ -49,8 +49,8 @@ export const validate = ({ value, id }, validators) => {
 			}
 		}
 		if (validator.type === VALIDATOR_TYPE_EMAIL) {
-			if (!error && /^\S+@\S+\.\S+$/.test(value)) {
-				error = `${id} is not correct email`;
+			if (!error && !/^\S+@\S+\.\S+$/.test(value)) {
+				error = `Email is not valid`;
 			}
 		}
 	}
