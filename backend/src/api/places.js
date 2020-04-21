@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const { Types } = require('mongoose');
 
 const PlaceModel = require('../db/models/place');
 const { getCoordsForAddress } = require('../utils/location');
@@ -10,7 +11,7 @@ const getPlace = async (req, res, next) => {
 		const place = await PlaceModel.findById(placeId);
 
 		if (!place) {
-			throw new HttpError(404);
+			throw new HttpError('Not Found', 404);
 		}
 
 		res.json(place);
@@ -22,13 +23,24 @@ const getPlace = async (req, res, next) => {
 const getUserPlaces = async (req, res, next) => {
 	try {
 		const { userId } = req.params;
-		const places = await PlaceModel.find({ creator: userId });
+		const places = await PlaceModel.aggregate()
+			.match({
+				creator: Types.ObjectId(userId),
+			})
+			.lookup({
+				from: 'users',
+				let: { creator: '$_id' },
+				as: 'creator',
+				pipeline: [{ $project: { name: 1, _id: 0 } }],
+			})
+			.unwind('creator')
+			.exec();
 
 		if (!places || !places.length) {
-			throw new HttpError(404);
+			throw new HttpError('Not Found', 404);
 		}
 
-		res.json(place);
+		res.json({ result: places, error: null });
 	} catch (err) {
 		next(err);
 	}
@@ -50,7 +62,7 @@ const createNewPlace = async (req, res, next) => {
 			description,
 			location: coordinates,
 			address,
-			creator,
+			creator: '5e9f1d0ca9f9de4f540e8d1a',
 			image:
 				'https://i.insider.com/5a3433814aa6b51c008b55e3?width=1100&format=jpeg&auto=webp',
 		});
@@ -80,7 +92,7 @@ const editPlace = async (req, res, next) => {
 		);
 
 		if (!place) {
-			throw new HttpError(404);
+			throw new HttpError('Not Found', 404);
 		}
 
 		res.json({ result: place, error: null });
@@ -95,7 +107,7 @@ const deletePlace = async (req, res, next) => {
 		const place = await PlaceModel.findById(placeId);
 
 		if (!place) {
-			throw new HttpError(404);
+			throw new HttpError('Not Found', 404);
 		}
 
 		await place.deleteOne();

@@ -30,9 +30,8 @@ const placeSchema = new Schema({
 		},
 	},
 	creator: {
-		// type: Schema.Types.ObjectId,
-		// ref: 'User',
-		type: String,
+		type: Schema.Types.ObjectId,
+		ref: 'User',
 		required: true,
 	},
 });
