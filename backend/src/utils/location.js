@@ -12,7 +12,7 @@ async function getCoordsForAddress(address) {
 	if (!data || data.status === 'ZERO_RESULTS') {
 		//TODO: handle error
 	}
-
+	console.log(data);
 	const coordinates = data.results[0].geometry.location;
 	return coordinates;
 }
