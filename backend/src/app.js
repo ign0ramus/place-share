@@ -1,9 +1,12 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
+const connectToMongoose = require('./db/connectToMongoose');
 const placesRoutes = require('./routes/places');
 const userRoutes = require('./routes/users');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
@@ -23,4 +26,16 @@ app.use((error, req, res, next) => {
 	res.json({ message: error.message || 'An unkown error occured!' });
 });
 
-app.listen(5000);
+const run = async () => {
+	try {
+		await connectToMongoose();
+
+		app.listen(PORT, () => {
+			console.log(`App is running on port ${PORT}`);
+		});
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+run();
