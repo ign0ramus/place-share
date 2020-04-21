@@ -1,4 +1,5 @@
 const { check } = require('express-validator');
+const UserModel = require('../db/models/user');
 
 const createNewPlaceValidationMiddleware = [
 	check('title', 'Title is required.').not().isEmpty(),
@@ -33,6 +34,13 @@ const signUpValidationMiddleware = [
 		max: 100,
 	}),
 	check('email', 'Email is not valid.').normalizeEmail().isEmail(),
+	check('email', 'Email already exists').custom(async (email) => {
+		const user = await UserModel.findOne({ email });
+
+		if (user) {
+			throw Error('Email already exists');
+		}
+	}),
 	check('password', 'Password minimum length is 6 characters.').isLength({
 		min: 6,
 	}),

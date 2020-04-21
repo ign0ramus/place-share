@@ -1,11 +1,11 @@
 const express = require('express');
 
-const { getUser, signUp, signIn } = require('../api/users');
+const { getUsers, signUp, signIn } = require('../api/users');
 const { signUpValidationMiddleware } = require('../middlewares/validation');
 
 const router = express.Router();
 
-router.get('/', getUser);
+router.get('/', getUsers);
 router.post('/sign-up', signUpValidationMiddleware, signUp);
 router.post('/sign-in', signIn);
 

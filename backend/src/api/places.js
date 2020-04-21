@@ -36,8 +36,8 @@ const getUserPlaces = async (req, res, next) => {
 
 const createNewPlace = async (req, res, next) => {
 	try {
-		const { title, description, address, creator } = req.body;
-		const errors = validationResult(req);
+		const { title, description, address } = req.body;
+		const errors = validationResult(req).formatWith(({ msg }) => msg);
 
 		if (!errors.isEmpty()) {
 			res.status(422);
@@ -66,7 +66,7 @@ const editPlace = async (req, res, next) => {
 		const { placeId } = req.params;
 		const { title, description } = req.body;
 
-		const errors = validationResult(req);
+		const errors = validationResult(req).formatWith(({ msg }) => msg);
 
 		if (!errors.isEmpty()) {
 			res.status(422);

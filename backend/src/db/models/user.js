@@ -12,10 +12,19 @@ const userSchema = new Schema({
 		index: true,
 		unique: true,
 	},
+	image: String,
 	password: {
 		type: String,
 		required: true,
 	},
 });
+
+userSchema.methods.toDTO = function () {
+	return {
+		name: this.name,
+		email: this.email,
+		image: this.image,
+	};
+};
 
 module.exports = mongoose.model('User', userSchema);
