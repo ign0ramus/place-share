@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const connectToMongoose = require('./db/connectToMongoose');
 const placesRoutes = require('./routes/places');
@@ -10,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000' }));
 
 app.use('/api/places', placesRoutes);
 app.use('/api/users', userRoutes);

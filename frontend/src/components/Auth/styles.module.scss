@@ -2,10 +2,17 @@
 	width: 90%;
 	max-width: 25rem;
 	margin: 7rem auto;
-    text-align: center;
+	text-align: center;
 
 	form {
 		margin-bottom: 1rem;
+	}
+
+	.error {
+		display: block;
+		padding: 1rem 0;
+		text-transform: uppercase;
+		color: red;
 	}
 }
 

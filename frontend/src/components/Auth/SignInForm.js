@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useForm } from '../../hooks/formHook';
 import Card from '../common/Card/Card';
@@ -18,19 +18,28 @@ const initInputs = {
 	},
 };
 
-const SignInForm = (props) => {
+const SignInForm = () => {
+	const [authError, setAuthError] = useState(null);
 	const [state, handleChange] = useForm(initInputs, {});
-	const userContext = useContext(UserContext);
+	const { signIn, setUser } = useContext(UserContext);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		userContext.signIn();
-		console.log('Login');
+		const res = await signIn({
+			email: state.inputs.email.value,
+			password: state.inputs.password.value,
+		});
+
+		if (res.error) {
+			return setAuthError(res.error);
+		}
+
+		setUser(res.result);
 	};
 
 	return (
 		<Card className={classes.container}>
-			<h2>Sign In</h2>
+			<h2>{'Sign In'}</h2>
 			<hr />
 			<form onSubmit={handleSubmit}>
 				<Input
@@ -45,11 +54,10 @@ const SignInForm = (props) => {
 					id={state.inputs.password.id}
 					type='password'
 					onChange={handleChange}
-					error={state.errors.password}
 				/>
-
+				{authError && <span className={classes.error}>{authError}</span>}
 				<Button type='submit' disabled={state.isSubmitDisabled}>
-					Sign in
+					{'Sign in'}
 				</Button>
 			</form>
 		</Card>

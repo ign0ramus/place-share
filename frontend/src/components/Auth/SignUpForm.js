@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import isObject from 'lodash.isobject';
 
 import { useForm } from '../../hooks/formHook';
 import Card from '../common/Card/Card';
 import Input from '../common/Input/Input';
 import Button from '../common/Button/Button';
 import classes from './styles.module.scss';
+import { UserContext } from '../../context/UserContext';
+import { VALIDATOR_MINLENGTH } from '../../util/validator';
 
 const initInputs = {
 	email: {
@@ -14,6 +17,7 @@ const initInputs = {
 	password: {
 		id: 'password',
 		value: '',
+		validators: [VALIDATOR_MINLENGTH(6)],
 	},
 	name: {
 		id: 'name',
@@ -21,12 +25,28 @@ const initInputs = {
 	},
 };
 
-const SignInForm = (props) => {
-	const [state, handleChange] = useForm(initInputs, {});
+const SignInForm = () => {
+	const [requestError, setRequestError] = useState(null);
+	const [state, handleChange, setErrors] = useForm(initInputs, {});
+	const { signUp, setUser } = useContext(UserContext);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log('Login');
+		const res = await signUp({
+			email: state.inputs.email.value,
+			name: state.inputs.name.value,
+			password: state.inputs.password.value,
+		});
+
+		if (res.error) {
+			if (isObject(res.error)) {
+				return setErrors(res.error);
+			}
+
+			return setRequestError(res.error);
+		}
+
+		setUser(res.result);
 	};
 
 	return (
@@ -55,9 +75,9 @@ const SignInForm = (props) => {
 					onChange={handleChange}
 					error={state.errors.password}
 				/>
-
+				{requestError && <span className={classes.error}>{requestError}</span>}
 				<Button type='submit' disabled={state.isSubmitDisabled}>
-					Sign up
+					{'Sign up'}
 				</Button>
 			</form>
 		</Card>

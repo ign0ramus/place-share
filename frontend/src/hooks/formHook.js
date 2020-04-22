@@ -13,20 +13,26 @@ const formValidators = {
 	address: [VALIDATOR_REQUIRE()],
 	email: [VALIDATOR_EMAIL()],
 	password: [],
+	name: [],
 };
 
 const formReducer = (state, action) => {
 	switch (action.type) {
 		case 'INPUT_CHANGE':
-			const [inputs, errors] = validateInput(
-				state,
-				action
-			);
+			const [inputs, errors] = validateInput(state, action);
 			return {
 				...state,
 				inputs,
 				errors,
-				isSubmitDisabled: isSubmitDisabled(state, action.initInputs),
+				isSubmitDisabled: isSubmitDisabled(
+					{ inputs, errors },
+					action.initInputs
+				),
+			};
+		case 'SET_ERRORS':
+			return {
+				...state,
+				errors: action.value,
 			};
 		default:
 			return state;
@@ -72,9 +78,17 @@ export const useForm = (initInputs, initErrors) => {
 				id: e.target.id,
 			},
 			initInputs,
-			validators: formValidators[e.target.id],
+			validators:
+				initInputs[e.target.id].validators || formValidators[e.target.id],
 		});
 	};
 
-	return [state, handleChange];
+	const setErrors = (errors) => {
+		dispatch({
+			type: 'SET_ERRORS',
+			value: errors,
+		});
+	};
+
+	return [state, handleChange, setErrors];
 };
