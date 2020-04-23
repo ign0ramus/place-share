@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 
 const connectToMongoose = require('./db/connectToMongoose');
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000' }));
 
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 app.use('/api/places', placesRoutes);
 app.use('/api/users', userRoutes);
 app.use(notFoundRoute);

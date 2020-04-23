@@ -2,12 +2,16 @@ const requestData = async (method, link, data, params = {}) => {
 	try {
 		const options = {
 			method: method,
-			headers: { 'Content-Type': 'application/json' },
 			...params,
 		};
-
-		if (data) {
+		if (!data || (data && !data.isFormData)) {
+			options.headers = { 'Content-Type': 'application/json' };
+		}
+		if (data && !data.isFormData) {
 			options.body = JSON.stringify(data);
+		}
+		if (data && data.isFormData) {
+			options.body = data.formData;
 		}
 
 		const res = await fetch(link, options);

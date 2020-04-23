@@ -10,9 +10,9 @@ async function getCoordsForAddress(address) {
 	const { data } = response;
 
 	if (!data || data.status === 'ZERO_RESULTS') {
-		//TODO: handle error
+		throw Error('Location not found');
 	}
-	console.log(data);
+
 	const coordinates = data.results[0].geometry.location;
 	return coordinates;
 }

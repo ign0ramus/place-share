@@ -37,11 +37,13 @@ const SignInForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const res = await signUp({
-			email: state.inputs.email.value,
-			name: state.inputs.name.value,
-			password: state.inputs.password.value,
-		});
+		const formData = new FormData();
+		formData.append('email', state.inputs.email.value);
+		formData.append('name', state.inputs.name.value);
+		formData.append('password', state.inputs.password.value);
+		formData.append('image', state.inputs.image.value);
+
+		const res = await signUp({ formData, isFormData: true });
 
 		if (res.error) {
 			if (isObject(res.error)) {

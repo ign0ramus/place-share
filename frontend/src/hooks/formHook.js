@@ -47,7 +47,6 @@ const formReducer = (state, action) => {
 };
 
 const isSubmitDisabled = (state, initInputs) => {
-	console.log(state);
 	const hasErrors = () => Object.values(state.errors).some(Boolean);
 	const isEveryInputFilled = () =>
 		!Object.values(state.inputs).every(

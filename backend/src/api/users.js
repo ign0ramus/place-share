@@ -29,7 +29,7 @@ const signUp = async (req, res, next) => {
 			name,
 			email,
 			password: hash,
-			// TODO: image
+			image: req.file.path,
 		});
 		res.json({ result: user.toDTO(), error: null });
 	} catch (err) {
