@@ -34,6 +34,12 @@ const formReducer = (state, action) => {
 				...state,
 				errors: action.value,
 			};
+		case 'RESET_STATE':
+			return {
+				inputs: action.value.inputs,
+				errors: action.value.errors,
+				isSubmitDisabled: true,
+			};
 		default:
 			return state;
 	}
@@ -90,5 +96,12 @@ export const useForm = (initInputs, initErrors) => {
 		});
 	};
 
-	return [state, handleChange, setErrors];
+	const resetState = (inputs, errors) => {
+		dispatch({
+			type: 'RESET_STATE',
+			value: { inputs, errors },
+		});
+	};
+
+	return [state, handleChange, setErrors, resetState];
 };
