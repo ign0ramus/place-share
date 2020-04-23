@@ -7,7 +7,7 @@ import Map from '../../../common/Map/Map';
 import { UserContext } from '../../../../context/UserContext';
 import classes from './PlaceItem.module.scss';
 
-const PlaceItem = ({ place }) => {
+const PlaceItem = ({ place, onDelete }) => {
 	const [isMapOpen, setIsMapOpen] = useState(false);
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 	const userContext = useContext(UserContext);
@@ -18,8 +18,8 @@ const PlaceItem = ({ place }) => {
 	const handleOpenDelete = () => setIsDeleteOpen(true);
 	const handleCloseDelete = () => setIsDeleteOpen(false);
 
-	const handleDelete = () => {
-		console.log('DELETE');
+	const handleDelete = async () => {
+		await onDelete(place._id);
 		handleCloseDelete();
 	};
 
@@ -34,7 +34,7 @@ const PlaceItem = ({ place }) => {
 				footer={<Button onClick={hanldeCloseMap}>Close</Button>}
 			>
 				<div className={classes.mapContainer}>
-					<Map center={place.coordinates} zoom={16} />
+					<Map center={place.location} zoom={16} />
 				</div>
 			</Modal>
 			<Modal
@@ -82,7 +82,7 @@ const PlaceItem = ({ place }) => {
 						</Button>
 						{userContext.user && (
 							<>
-								<Button to={`/places/${place.id}`}>Edit</Button>
+								<Button to={`/places/${place._id}`}>Edit</Button>
 								<Button onClick={handleOpenDelete} type='danger'>
 									Delete
 								</Button>
