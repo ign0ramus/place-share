@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useContext } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import Spinner from '../components/common/Spinner/Spinner';
 
 const SignIn = lazy(() => import('./SignIn'));
 const SignUp = lazy(() => import('./SignUp'));
@@ -13,7 +14,7 @@ const NewPlace = lazy(() => import('./NewPlace'));
 const Routes = () => {
 	const userContext = useContext(UserContext);
 	return (
-		<Suspense fallback={'Loading...'}>
+		<Suspense fallback={<Spinner asOverlay />}>
 			{userContext.user ? (
 				<Switch>
 					<Route path='/' exact component={Users} />

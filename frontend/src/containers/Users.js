@@ -1,10 +1,7 @@
-import React from 'react';
-import UsersList from '../components/users/UsersList/UsersList';
+import React, { useEffect, useState } from 'react';
 
+import UsersList from '../components/Users/UsersList/UsersList';
 
-
-const Users = () => {
-	return <UsersList users={[]} />;
-};
+const Users = () => <UsersList />;
 
 export default Users;

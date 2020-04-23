@@ -24,10 +24,6 @@ const getUserPlaces = async (req, res, next) => {
 		const { userId } = req.params;
 		const places = await PlaceModel.find({ creator: userId });
 
-		if (!places || !places.length) {
-			throw new HttpError('Not Found', 404);
-		}
-
 		res.json({ result: places, error: null });
 	} catch (err) {
 		next(err);

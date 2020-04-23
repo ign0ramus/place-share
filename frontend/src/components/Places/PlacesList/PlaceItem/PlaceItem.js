@@ -7,21 +7,12 @@ import Map from '../../../common/Map/Map';
 import { UserContext } from '../../../../context/UserContext';
 import classes from './PlaceItem.module.scss';
 
-const PlaceItem = ({ place, onDelete }) => {
+const PlaceItem = ({ place, onOpenDelete }) => {
 	const [isMapOpen, setIsMapOpen] = useState(false);
-	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 	const userContext = useContext(UserContext);
 
 	const handleOpenMap = () => setIsMapOpen(true);
 	const hanldeCloseMap = () => setIsMapOpen(false);
-
-	const handleOpenDelete = () => setIsDeleteOpen(true);
-	const handleCloseDelete = () => setIsDeleteOpen(false);
-
-	const handleDelete = async () => {
-		await onDelete(place._id);
-		handleCloseDelete();
-	};
 
 	return (
 		<>
@@ -37,35 +28,6 @@ const PlaceItem = ({ place, onDelete }) => {
 					<Map center={place.location} zoom={16} />
 				</div>
 			</Modal>
-			<Modal
-				isOpen={isDeleteOpen}
-				onCancel={handleCloseDelete}
-				header='Are you sure?'
-				footerClass={classes.placeActions}
-				footer={
-					<>
-						<Button
-							className={classes.btn}
-							onClick={handleCloseDelete}
-							type='inverse'
-						>
-							Cancel
-						</Button>
-						<Button
-							className={classes.btn}
-							onClick={handleDelete}
-							type='danger'
-						>
-							Delete
-						</Button>
-					</>
-				}
-			>
-				<p>
-					Do you want to proceed and delete this place? Please note that it
-					can't be undone thereafter.
-				</p>
-			</Modal>
 			<li className={classes.container}>
 				<Card className={classes.placeContent}>
 					<div className={classes.placeImage}>
@@ -80,10 +42,10 @@ const PlaceItem = ({ place, onDelete }) => {
 						<Button type='inverse' onClick={handleOpenMap}>
 							View on map
 						</Button>
-						{userContext.user && (
+						{userContext.user && userContext.user._id === place.creator && (
 							<>
 								<Button to={`/places/${place._id}`}>Edit</Button>
-								<Button onClick={handleOpenDelete} type='danger'>
+								<Button onClick={onOpenDelete} type='danger'>
 									Delete
 								</Button>
 							</>

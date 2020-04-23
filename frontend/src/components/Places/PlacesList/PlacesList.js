@@ -10,10 +10,14 @@ import Spinner from '../../common/Spinner/Spinner';
 import Button from '../../common/Button/Button';
 import PlaceItem from './PlaceItem/PlaceItem';
 import Card from '../../common/Card/Card';
+import Modal from '../../common/Modal/Modal';
 import classes from './PlacesList.module.scss';
 
 const PlacesList = ({ userId }) => {
 	const [places, setPlaces] = useState([]);
+	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+	const [deleteId, setDeleteId] = useState(null);
+
 	const { isLoading, sendRequest, error } = useHttpClient(
 		GET_USERS_PLACES_API(userId),
 		getRequest
@@ -22,7 +26,7 @@ const PlacesList = ({ userId }) => {
 	useEffect(() => {
 		const fetchPlaces = async () => {
 			const res = await sendRequest();
-			if (!error) {
+			if (!res.error) {
 				setPlaces(res.result);
 			}
 		};
@@ -30,8 +34,20 @@ const PlacesList = ({ userId }) => {
 		fetchPlaces();
 	}, [sendRequest]);
 
-	const handleDeleteItem = async (placeId) => {
-		await deleteRequest(GET_OR_EDIT_PLACE_API(placeId));
+	const handleDeleteItem = async () => {
+		await deleteRequest(GET_OR_EDIT_PLACE_API(deleteId));
+		setPlaces((places) => places.filter((place) => place._id !== deleteId));
+		handleCloseDelete();
+	};
+
+	const handleOpenDelete = (placeId) => {
+		setIsDeleteOpen(true);
+		setDeleteId(placeId);
+	};
+
+	const handleCloseDelete = () => {
+		setIsDeleteOpen(false);
+		setDeleteId(null);
 	};
 
 	const renderUsers = () => {
@@ -56,16 +72,49 @@ const PlacesList = ({ userId }) => {
 			<ul className={classes.placesList}>
 				{places.map((place) => (
 					<PlaceItem
+						onOpenDelete={() => handleOpenDelete(place._id)}
 						key={place._id}
 						place={place}
-						onDelete={handleDeleteItem}
 					/>
 				))}
 			</ul>
 		);
 	};
 
-	return <div className={classes.container}>{renderUsers()}</div>;
+	return (
+		<div className={classes.container}>
+			<Modal
+				isOpen={isDeleteOpen}
+				onCancel={handleCloseDelete}
+				header='Are you sure?'
+				footerClass={classes.placeActions}
+				footer={
+					<>
+						<Button
+							className={classes.btn}
+							onClick={handleCloseDelete}
+							type='inverse'
+						>
+							Cancel
+						</Button>
+						<Button
+							className={classes.btn}
+							onClick={handleDeleteItem}
+							type='danger'
+						>
+							Delete
+						</Button>
+					</>
+				}
+			>
+				<p>
+					Do you want to proceed and delete this place? Please note that it
+					can't be undone thereafter.
+				</p>
+			</Modal>
+			{renderUsers()}
+		</div>
+	);
 };
 
 export default PlacesList;
