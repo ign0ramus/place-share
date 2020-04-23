@@ -1,5 +1,4 @@
 const { validationResult } = require('express-validator');
-const { Types } = require('mongoose');
 
 const PlaceModel = require('../db/models/place');
 const { getCoordsForAddress } = require('../utils/location');
@@ -14,7 +13,7 @@ const getPlace = async (req, res, next) => {
 			throw new HttpError('Not Found', 404);
 		}
 
-		res.json(place);
+		res.json({ result: place, error: null });
 	} catch (err) {
 		next(err);
 	}
@@ -23,18 +22,7 @@ const getPlace = async (req, res, next) => {
 const getUserPlaces = async (req, res, next) => {
 	try {
 		const { userId } = req.params;
-		const places = await PlaceModel.aggregate()
-			.match({
-				creator: Types.ObjectId(userId),
-			})
-			.lookup({
-				from: 'users',
-				let: { creator: '$_id' },
-				as: 'creator',
-				pipeline: [{ $project: { name: 1, _id: 0 } }],
-			})
-			.unwind('creator')
-			.exec();
+		const places = await PlaceModel.find({ creator: userId });
 
 		if (!places || !places.length) {
 			throw new HttpError('Not Found', 404);

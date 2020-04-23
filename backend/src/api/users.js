@@ -6,7 +6,7 @@ const saltRounds = 10;
 
 const getUsers = async (req, res, next) => {
 	try {
-		const users = await UserModel.find({}, '-password');
+		const users = await UserModel.aggregate().sample(10).exec();
 		res.json({ result: users, error: null });
 	} catch (err) {
 		next(err);

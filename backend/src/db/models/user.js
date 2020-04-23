@@ -21,6 +21,7 @@ const userSchema = new Schema({
 
 userSchema.methods.toDTO = function () {
 	return {
+		_id: this._id,
 		name: this.name,
 		email: this.email,
 		image: this.image,

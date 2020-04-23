@@ -10,7 +10,7 @@ const createNewPlaceValidationMiddleware = [
 	check('description', 'Description minimum length is 5 characters.').isLength({
 		min: 5,
 	}),
-	check('address', 'Addres is required.').not().isEmpty(),
+	check('address', 'Address is required.').not().isEmpty(),
 	check('address', 'Title maximum length is 300 characters.').isLength({
 		max: 300,
 	}),
