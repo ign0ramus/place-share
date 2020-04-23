@@ -5,6 +5,7 @@ import Button from '../../../common/Button/Button';
 import Modal from '../../../common/Modal/Modal';
 import Map from '../../../common/Map/Map';
 import { UserContext } from '../../../../context/UserContext';
+import { API_STATIC_URL } from '../../../../const/api';
 import classes from './PlaceItem.module.scss';
 
 const PlaceItem = ({ place, onOpenDelete }) => {
@@ -31,7 +32,7 @@ const PlaceItem = ({ place, onOpenDelete }) => {
 			<li className={classes.container}>
 				<Card className={classes.placeContent}>
 					<div className={classes.placeImage}>
-						<img src={place.image} alt={place.title} />
+						<img src={`${API_STATIC_URL}/${place.image}`} alt={place.title} />
 					</div>
 					<div className={classes.placeInfo}>
 						<h2>{place.title}</h2>

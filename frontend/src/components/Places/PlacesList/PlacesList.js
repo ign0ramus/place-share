@@ -14,7 +14,7 @@ import Modal from '../../common/Modal/Modal';
 import classes from './PlacesList.module.scss';
 
 const PlacesList = ({ userId }) => {
-	const [places, setPlaces] = useState([]);
+	const [places, setPlaces] = useState(null);
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
 

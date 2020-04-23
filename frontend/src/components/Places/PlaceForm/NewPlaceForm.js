@@ -12,6 +12,7 @@ import { useHttpClient } from '../../../hooks/httpHook';
 import Spinner from '../../common/Spinner/Spinner';
 import { UserContext } from '../../../context/UserContext';
 import { postRequest } from '../../../util/fetch';
+import ImageUpload from '../../common/ImageUpload/ImageUpload';
 import classes from './styles.module.scss';
 
 const createInitInputs = () => ({
@@ -26,6 +27,10 @@ const createInitInputs = () => ({
 	address: {
 		value: '',
 		id: 'address',
+	},
+	image: {
+		value: null,
+		id: 'image',
 	},
 });
 
@@ -44,11 +49,13 @@ const NewPlaceForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const res = await sendRequest({
-			title: state.inputs.title.value,
-			description: state.inputs.description.value,
-			address: state.inputs.address.value,
-		});
+		const formData = new FormData();
+		formData.append('title', state.inputs.title.value);
+		formData.append('description', state.inputs.description.value);
+		formData.append('address', state.inputs.address.value);
+		formData.append('image', state.inputs.image.value);
+
+		const res = await sendRequest({ formData, isFormData: true });
 
 		if (res.error) {
 			if (isObject(res.error)) {
@@ -86,6 +93,11 @@ const NewPlaceForm = () => {
 				value={state.inputs.address.value}
 				onChange={handleChange}
 				error={state.errors.address}
+			/>
+			<ImageUpload
+				imageText={'Upload photo of a place'}
+				id='image'
+				onImageInput={handleChange}
 			/>
 			{requestError && <span className={classes.error}>{requestError}</span>}
 			<Button type='submit' disabled={state.isSubmitDisabled}>

@@ -1,5 +1,7 @@
 const express = require('express');
 
+const fileUploadMiddleware = require('../middlewares/fileUpload');
+
 const {
 	getPlace,
 	getUserPlaces,
@@ -16,7 +18,12 @@ const router = express.Router();
 
 router.get('/:placeId', getPlace);
 router.get('/user/:userId', getUserPlaces);
-router.post('/', createNewPlaceValidationMiddleware, createNewPlace);
+router.post(
+	'/',
+	fileUploadMiddleware.single('image'),
+	createNewPlaceValidationMiddleware,
+	createNewPlace
+);
 router.patch('/:placeId', editPlaceValidationMiddleware, editPlace);
 router.delete('/:placeId', deletePlace);
 

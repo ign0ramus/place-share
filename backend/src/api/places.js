@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const fs = require('fs');
 
 const PlaceModel = require('../db/models/place');
 const { getCoordsForAddress } = require('../utils/location');
@@ -47,8 +48,7 @@ const createNewPlace = async (req, res, next) => {
 			location: coordinates,
 			address,
 			creator: '5e9f1d0ca9f9de4f540e8d1a',
-			image:
-				'https://i.insider.com/5a3433814aa6b51c008b55e3?width=1100&format=jpeg&auto=webp',
+			image: req.file ? req.file.path : '',
 		});
 
 		res.json({ result: place, error: null });
@@ -93,8 +93,11 @@ const deletePlace = async (req, res, next) => {
 		if (!place) {
 			throw new HttpError('Not Found', 404);
 		}
-
+		const imagePath = place.image;
 		await place.deleteOne();
+		fs.unlink(imagePath, (err) => {
+			console.error(err);
+		});
 
 		res.json({ result: true, error: null });
 	} catch (err) {
