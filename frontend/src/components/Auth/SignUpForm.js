@@ -8,6 +8,7 @@ import Button from '../common/Button/Button';
 import classes from './styles.module.scss';
 import { UserContext } from '../../context/UserContext';
 import { VALIDATOR_MINLENGTH } from '../../util/validator';
+import ImageUpload from '../common/ImageUpload/ImageUpload';
 
 const initInputs = {
 	email: {
@@ -22,6 +23,10 @@ const initInputs = {
 	name: {
 		id: 'name',
 		value: '',
+	},
+	image: {
+		id: 'image',
+		value: null,
 	},
 };
 
@@ -67,6 +72,12 @@ const SignInForm = () => {
 					type='text'
 					onChange={handleChange}
 					error={state.errors.name}
+				/>
+				<ImageUpload
+					imageText={'Pick your avatar'}
+					center
+					id='image'
+					onImageInput={handleChange}
 				/>
 				<Input
 					element='input'

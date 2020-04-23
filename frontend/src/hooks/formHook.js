@@ -14,6 +14,7 @@ const formValidators = {
 	email: [VALIDATOR_EMAIL()],
 	password: [],
 	name: [],
+	image: [],
 };
 
 const formReducer = (state, action) => {
@@ -46,9 +47,12 @@ const formReducer = (state, action) => {
 };
 
 const isSubmitDisabled = (state, initInputs) => {
+	console.log(state);
 	const hasErrors = () => Object.values(state.errors).some(Boolean);
 	const isEveryInputFilled = () =>
-		!Object.values(state.inputs).every((el) => Boolean(el.value));
+		!Object.values(state.inputs).every(
+			(el) => el.id === 'image' || Boolean(el.value)
+		);
 	const wasPlaceDataChanged = () =>
 		Object.values(state.inputs).some(
 			(el) => !initInputs[el.id] || el.value !== initInputs[el.id]
