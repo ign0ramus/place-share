@@ -7,7 +7,6 @@ import classes from './NavLinks.module.scss';
 const NavLinks = () => {
 	const userContext = useContext(UserContext);
 	const isUserSignIn = Boolean(userContext.user);
-
 	return (
 		<ul className={classes.container}>
 			<li>
@@ -18,7 +17,10 @@ const NavLinks = () => {
 			{isUserSignIn && (
 				<>
 					<li>
-						<NavLink activeClassName={classes.active} to='/1id/places'>
+						<NavLink
+							activeClassName={classes.active}
+							to={`/${userContext.user._id}/places`}
+						>
 							My places
 						</NavLink>
 					</li>
@@ -29,9 +31,7 @@ const NavLinks = () => {
 						</NavLink>
 					</li>
 					<li>
-						<button onClick={userContext.signOut}>
-							Sign out
-						</button>
+						<button onClick={userContext.signOut}>Sign out</button>
 					</li>
 				</>
 			)}

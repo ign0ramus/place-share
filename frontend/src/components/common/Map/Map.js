@@ -7,26 +7,20 @@ const Map = (props) => {
 	const mapRef = useRef();
 
 	useEffect(() => {
-		new window.ol.Map({
-			target: mapRef.current.id,
-			layers: [
-				new window.ol.layer.Tile({
-					source: new window.ol.source.OSM(),
-				}),
-			],
-			view: new window.ol.View({
-				center: window.ol.proj.fromLonLat([props.center.lng, props.center.lat]),
-				zoom: props.zoom,
-			}),
+		const map = new window.google.maps.Map(mapRef.current, {
+			center: props.center,
+			zoom: props.zoom,
 		});
+
+		new window.google.maps.Marker({ position: props.center, map });
 	}, [props.center, props.zoom]);
 
 	return (
 		<div
 			ref={mapRef}
 			className={classnames(classes.container, props.className)}
-            style={props.style}
-            id='map'
+			style={props.style}
+			id='map'
 		></div>
 	);
 };
