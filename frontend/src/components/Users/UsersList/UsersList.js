@@ -18,7 +18,7 @@ const UsersList = () => {
 	useEffect(() => {
 		const fetchUsers = async () => {
 			const res = await sendRequest();
-			if (!error) {
+			if (!res.error) {
 				setUsers(res.result);
 			}
 		};

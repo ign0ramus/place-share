@@ -1,8 +1,18 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 const UserModel = require('../db/models/user');
 
 const saltRounds = 10;
+
+const setCookieToken = (res, token) => {
+	res.cookie('token', token, {
+		maxAge: 259200000,
+		httpOnly: true,
+		secure: process.env.NODE_ENV !== 'development',
+	});
+};
 
 const getUsers = async (req, res, next) => {
 	try {
@@ -31,6 +41,13 @@ const signUp = async (req, res, next) => {
 			password: hash,
 			image: req.file ? req.file.path : '',
 		});
+
+		const token = jwt.sign({ userId: user.id }, process.env.SECRET, {
+			expiresIn: '3d',
+		});
+
+		setCookieToken(res, token);
+
 		res.json({ result: user.toDTO(), error: null });
 	} catch (err) {
 		next(err);
@@ -47,6 +64,11 @@ const signIn = async (req, res, next) => {
 			return res.json({ result: null, error: 'Invalid email or password.' });
 		}
 
+		const token = jwt.sign({ userId: user.id }, process.env.SECRET, {
+			expiresIn: '3d',
+		});
+
+		setCookieToken(res, token);
 		res.json({ result: user.toDTO(), error: null });
 	} catch (err) {
 		next(err);

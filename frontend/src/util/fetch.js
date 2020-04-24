@@ -1,6 +1,7 @@
 const requestData = async (method, link, data, params = {}) => {
 	try {
 		const options = {
+			credentials: 'include',
 			method: method,
 			...params,
 		};
