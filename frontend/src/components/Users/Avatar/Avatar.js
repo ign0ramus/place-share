@@ -8,7 +8,11 @@ const Avatar = (props) => (
 	<div className={classnames(classes.container, props.className)}>
 		<img
 			className={classes.avatar}
-			src={props.img ? `${API_STATIC_URL}/${props.img}` : ''}
+			src={
+				props.img
+					? `${API_STATIC_URL}/${props.img}`
+					: '/images/avatar.jpg'
+			}
 			alt='Avatar'
 		/>
 	</div>

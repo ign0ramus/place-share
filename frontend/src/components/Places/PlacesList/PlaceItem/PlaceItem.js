@@ -33,7 +33,11 @@ const PlaceItem = ({ place, onOpenDelete }) => {
 				<Card className={classes.placeContent}>
 					<div className={classes.placeImage}>
 						<img
-							src={place.image ? `${API_STATIC_URL}/${place.image}` : ''}
+							src={
+								place.image
+									? `${API_STATIC_URL}/${place.image}`
+									: '/images/place.png'
+							}
 							alt={place.title}
 						/>
 					</div>
