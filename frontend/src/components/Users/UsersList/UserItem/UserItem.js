@@ -12,9 +12,6 @@ const UserItem = ({ user }) => (
 				<Avatar img={user.image} className={classes.userImage} />
 				<div className={classes.userInfo}>
 					<h2 className={classes.userName}>{user.name}</h2>
-					<h3 className={classes.userPlaceCount}>
-						{user.placesCount} {user.placesCount > 1 ? 'Places' : 'Place'}
-					</h3>
 				</div>
 			</Link>
 		</Card>
