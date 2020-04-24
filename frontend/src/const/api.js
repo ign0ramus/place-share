@@ -12,6 +12,8 @@ export const SIGN_UP_API = `${API}/users/sign-up`;
 export const SIGN_IN_API = `${API}/users/sign-in`;
 export const SIGN_OUT_API = `${API}/users/sign-out`;
 
+export const CHECK_USER_API = `${API}/users/check-user`;
+
 export const ADD_NEW_PLACE_API = `${API}/places`;
 export const GET_OR_EDIT_PLACE_API = (id) => `${API}/places/${id}`;
 

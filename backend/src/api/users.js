@@ -81,8 +81,28 @@ const signIn = async (req, res, next) => {
 	}
 };
 
+const checkUser = async (req, res, next) => {
+	try {
+		const { userId } = req;
+		if (userId) {
+			const user = await UserModel.findById(userId);
+			res.json({ result: user.toDTO(), error: null });
+		}
+		res.json({ result: null, error: true });
+	} catch (err) {
+		next(err);
+	}
+};
+
+const signOut = (req, res, next) => {
+	res.clearCookie('token');
+	res.json({ result: true, error: null });
+};
+
 module.exports = {
 	getUsers,
 	signUp,
 	signIn,
+	checkUser,
+	signOut,
 };
