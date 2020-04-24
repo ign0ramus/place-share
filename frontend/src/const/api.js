@@ -1,7 +1,7 @@
 const API =
 	process.env.NODE_ENV === 'development'
 		? 'http://localhost:5000/api'
-		: 'https://place-share-mern.herokuapp.com';
+		: 'https://place-share-mern.herokuapp.com/api';
 
 export const API_STATIC_URL =
 	process.env.NODE_ENV === 'development'
