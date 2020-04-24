@@ -86,7 +86,7 @@ const checkUser = async (req, res, next) => {
 		const { userId } = req;
 		if (userId) {
 			const user = await UserModel.findById(userId);
-			res.json({ result: user.toDTO(), error: null });
+			return res.json({ result: user.toDTO(), error: null });
 		}
 		res.json({ result: null, error: true });
 	} catch (err) {
