@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const { ObjectId } = require('mongoose').Types;
 const jwt = require('jsonwebtoken');
 
 const UserModel = require('../db/models/user');
@@ -16,7 +17,12 @@ const setCookieToken = (res, token) => {
 
 const getUsers = async (req, res, next) => {
 	try {
-		const users = await UserModel.aggregate().sample(10).exec();
+		const { userId } = req;
+		const users = await UserModel.aggregate()
+			.match({ _id: { $ne: ObjectId(userId) } })
+			.sample(10)
+			.exec();
+
 		res.json({ result: users, error: null });
 	} catch (err) {
 		next(err);

@@ -18,7 +18,7 @@ const EditPlace = () => {
 	useEffect(() => {
 		const fetchPlace = async () => {
 			const res = await sendRequest();
-			if (res.error) {
+			if (!res.error) {
 				setPlace(res.result);
 			}
 		};

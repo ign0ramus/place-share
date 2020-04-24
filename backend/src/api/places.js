@@ -8,12 +8,14 @@ const HttpError = require('../errors/httpError');
 const getPlace = async (req, res, next) => {
 	try {
 		const { placeId } = req.params;
+		const { userId } = req;
 		const place = await PlaceModel.findById(placeId);
-
+		if (place.creator.toString() !== userId) {
+			throw new HttpError('Not authorized.', 401);
+		}
 		if (!place) {
 			throw new HttpError('Not Found', 404);
 		}
-
 		res.json({ result: place, error: null });
 	} catch (err) {
 		next(err);
@@ -34,6 +36,7 @@ const getUserPlaces = async (req, res, next) => {
 const createNewPlace = async (req, res, next) => {
 	try {
 		const { title, description, address } = req.body;
+		const { userId } = req;
 		const errors = validationResult(req).formatWith(({ msg }) => msg);
 
 		if (!errors.isEmpty()) {
@@ -47,7 +50,7 @@ const createNewPlace = async (req, res, next) => {
 			description,
 			location: coordinates,
 			address,
-			creator: '5e9f1d0ca9f9de4f540e8d1a',
+			creator: userId,
 			image: req.file ? req.file.path : '',
 		});
 
@@ -61,6 +64,7 @@ const editPlace = async (req, res, next) => {
 	try {
 		const { placeId } = req.params;
 		const { title, description } = req.body;
+		const { userId } = req;
 
 		const errors = validationResult(req).formatWith(({ msg }) => msg);
 
@@ -69,15 +73,16 @@ const editPlace = async (req, res, next) => {
 			return res.json({ result: null, error: errors.mapped() });
 		}
 
-		const place = await PlaceModel.findOneAndUpdate(
-			{ _id: placeId },
-			{ $set: { title, description } },
-			{ new: true }
-		);
+		const place = await PlaceModel.findOne({ _id: placeId });
+		if (place.creator.toString() !== userId) {
+			throw new HttpError('Not authorized.', 401);
+		}
 
 		if (!place) {
 			throw new HttpError('Not Found', 404);
 		}
+
+		await place.updateOne({ title, description });
 
 		res.json({ result: place, error: null });
 	} catch (err) {
@@ -88,8 +93,12 @@ const editPlace = async (req, res, next) => {
 const deletePlace = async (req, res, next) => {
 	try {
 		const { placeId } = req.params;
+		const { userId } = req;
 		const place = await PlaceModel.findById(placeId);
 
+		if (place.creator.toString() !== userId) {
+			throw new HttpError('Not authorized.', 401);
+		}
 		if (!place) {
 			throw new HttpError('Not Found', 404);
 		}

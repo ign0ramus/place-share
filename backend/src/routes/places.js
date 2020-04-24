@@ -1,7 +1,7 @@
 const express = require('express');
 
 const fileUploadMiddleware = require('../middlewares/fileUpload');
-
+const { protectRouteMiddleware } = require('../middlewares/auth');
 const {
 	getPlace,
 	getUserPlaces,
@@ -18,6 +18,9 @@ const router = express.Router();
 
 router.get('/:placeId', getPlace);
 router.get('/user/:userId', getUserPlaces);
+
+router.use(protectRouteMiddleware);
+
 router.post(
 	'/',
 	fileUploadMiddleware.single('image'),
