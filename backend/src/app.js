@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
-app.use('/uploads/images', express.static(path.join(__dirname, 'uploads', 'images')));
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 app.use(authMiddleware);
 
 app.use('/api/places', placesRoutes);
