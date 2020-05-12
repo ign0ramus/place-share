@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 
 import Card from '../../../common/Card/Card';
 import Button from '../../../common/Button/Button';
@@ -11,9 +11,13 @@ import classes from './PlaceItem.module.scss';
 const PlaceItem = ({ place, onOpenDelete }) => {
 	const [isMapOpen, setIsMapOpen] = useState(false);
 	const userContext = useContext(UserContext);
+	const imageRef = useRef();
 
 	const handleOpenMap = () => setIsMapOpen(true);
 	const hanldeCloseMap = () => setIsMapOpen(false);
+	const handleImageError = () => {
+		imageRef.current.src = '/images/place.png';
+	};
 
 	return (
 		<>
@@ -33,6 +37,8 @@ const PlaceItem = ({ place, onOpenDelete }) => {
 				<Card className={classes.placeContent}>
 					<div className={classes.placeImage}>
 						<img
+							ref={imageRef}
+							onError={handleImageError}
 							src={
 								place.image
 									? `${API_STATIC_URL}/${place.image}`
